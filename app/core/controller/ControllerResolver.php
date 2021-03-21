@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Controller;
+namespace core\controller;
 
-use App\Exception\UrlException;
+use exception\UrlException;
 
 /**
  * Class used to find the controller
@@ -23,7 +23,7 @@ class ControllerResolver
      */
     public static function findController(string $controllerName, string $actionName, array $params): void
     {
-        $class = "App\Controllers\\" . $controllerName . "Controller";
+        $class = CONTROLLERS_NAMESPACE . $controllerName . "Controller";
         if(!class_exists($class)) {
             throw new UrlException("Page not found!");
         }
@@ -44,13 +44,6 @@ class ControllerResolver
             self::callMethod($controller, $methodRender, $params);
         }
 
-        //TODO move to View
-        $viewName = \strtolower($actionName);
-        $viewPath = \VIEW_DIR . $controllerName . "/" . $viewName . ".php";        
-        if (!\file_exists($viewPath)) {
-            throw new UrlException("View file is missing!");
-        }
-              
     }
 
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace controllers;
 
-use App\Core\Controller\Controller;
+use core\controller\Controller;
 
 /**
  * Base Controller

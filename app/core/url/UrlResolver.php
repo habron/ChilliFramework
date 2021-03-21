@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Url;
+namespace core\url;
 
 /**
  * Class used to resolve URL address
@@ -11,9 +11,9 @@ namespace App\Core\Url;
 class UrlResolver
 {
 
-    private static string $controller = \DEFAULT_CONTROLLER;
+    private static string $controller = DEFAULT_CONTROLLER;
 
-    private static string $action = \DEFAULT_ACTION;
+    private static string $action = DEFAULT_ACTION;
 
     private static array $params = [];
 
@@ -85,11 +85,11 @@ class UrlResolver
     private static function resolveParameters(string $params): void
     {
         if (\strpos($params, "?") === false) {
-            self::$params[\DEFAULT_PARAM] = $params;
+            self::$params[DEFAULT_PARAM] = $params;
             return;
         }
 
-        self::$params[\DEFAULT_PARAM] = \substr($params, 0, strpos($params, "?"));
+        self::$params[DEFAULT_PARAM] = \substr($params, 0, strpos($params, "?"));
 
         $otherParams = \substr($params, strpos($params, "?") + 1);
 

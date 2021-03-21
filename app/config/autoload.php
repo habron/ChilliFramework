@@ -6,9 +6,11 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 use Tracy\Debugger;
 Debugger::enable(Debugger::DEVELOPMENT);
 
+//Config
 require_once __DIR__ . "/consts.php";
 
 //Core
+require_once __DIR__ . "/../core/Bootstrap.php";
 require_once __DIR__ . "/../core/controller/Controller.php";
 require_once __DIR__ . "/../core/controller/ControllerResolver.php";
 require_once __DIR__ . "/../core/url/UrlResolver.php";
