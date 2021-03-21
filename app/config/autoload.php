@@ -33,6 +33,3 @@ require_once __DIR__ . "/../controllers/HomepageController.php";
 
 //Model
 require_once __DIR__ . "/../model/Report.php";
-
-//Views
-require_once __DIR__ . "/../views/Homepage/default.php";

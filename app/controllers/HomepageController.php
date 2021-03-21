@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace controllers;
 
 use database\Reports;
+use DateTime;
+use Exception;
 
 /**
  * Homepage controller
@@ -27,8 +29,17 @@ class HomepageController extends BaseController
 	}
 
 
-	public function renderDefault(): void
+	/**
+	 * @param string $date
+	 */
+	public function renderDefault(string $date = ""): void
 	{
-
+		try {
+			$date = !empty($date) ? new DateTime($date) : null;
+			$this->template->date = $date->format("d.m.Y");
+		} catch (Exception $e) {
+			$date = null;
+		}
+		$this->template->reports = $this->reports->getReports($date);
 	}
 }

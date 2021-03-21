@@ -7,6 +7,7 @@ namespace core\view;
 use core\controller\Controller;
 use core\url\UrlEntity;
 use exception\UrlException;
+use stdClass;
 
 /**
  * Class used to resolve the view
@@ -31,23 +32,20 @@ class View
 			throw new UrlException("View file is missing!", 404);
 		}
 
-		echo self::renderView($viewPath, (array)$controller->getTemplate());
-
+		self::renderView($viewPath, $controller->getTemplate());
 	}
 
 
 	/**
 	 * Render view
 	 * @param string $path
-	 * @param array $params
-	 * @return string
+	 * @param StdClass $template
 	 */
-	private static function renderView(string $path, array $params): string
+	private static function renderView(string $path, StdClass $template): void
 	{
 		ob_start();
-		include($path);
-		$var = ob_get_contents();
-		ob_end_clean();
-		return $var;
+		include ($path);
+		ob_end_flush();
 	}
+
 }

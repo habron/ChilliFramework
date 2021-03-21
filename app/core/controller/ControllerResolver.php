@@ -19,6 +19,8 @@ use function method_exists;
 class ControllerResolver
 {
 
+	const NO_DEFAULT_VALUE = "!c5#re@f5GR5g6!ů§de";
+
 	/** @var Controller */
 	private static Controller $controller;
 
@@ -87,7 +89,7 @@ class ControllerResolver
 	 * Call controller mathod
 	 * @param Controller $controller
 	 * @param string $name
-	 * @param array $params
+	 * @param string[] $params
 	 * @return void
 	 * @throws UrlException
 	 */
@@ -100,11 +102,11 @@ class ControllerResolver
 		$args = self::getFuncArgNames($controller, $name);
 
 		$parameters = [];
-		foreach ($args as $arg) {
-			if (!isset($params[$arg])) {
+		foreach ($args as $arg => $defaultVal) {
+			if (!isset($params[$arg]) && $defaultVal == self::NO_DEFAULT_VALUE) {
 				throw new UrlException("Missing argument!", 404);
 			}
-			$parameters[$arg] = $params[$arg];
+			$parameters[$arg] = $params[$arg] ?? $defaultVal;
 		}
 
 		call_user_func_array(array($controller, $name), $parameters);
@@ -115,7 +117,7 @@ class ControllerResolver
 	 * Returns function arguments
 	 * @param Controller $controller
 	 * @param string $funcName
-	 * @return array
+	 * @return string[]
 	 */
 	private static function getFuncArgNames(Controller $controller, string $funcName): array
 	{
@@ -126,7 +128,11 @@ class ControllerResolver
 		}
 		$result = array();
 		foreach ($f->getParameters() as $param) {
-			$result[] = $param->name;
+			try {
+				$result[$param->name] = $param->getDefaultValue();
+			} catch (ReflectionException $e) {
+				$result[$param->name] = self::NO_DEFAULT_VALUE;
+			}
 		}
 		return $result;
 	}

@@ -26,7 +26,7 @@ class UrlEntity
 	 * UrlEntity constructor.
 	 * @param string $controller
 	 * @param string $action
-	 * @param array $params
+	 * @param string[] $params
 	 */
 	public function __construct(string $controller, string $action, array $params)
 	{
@@ -55,7 +55,7 @@ class UrlEntity
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getParams(): array
 	{
