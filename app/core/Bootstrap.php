@@ -6,6 +6,7 @@ namespace core;
 
 use core\controller\ControllerResolver;
 use core\url\UrlResolver;
+use core\view\View;
 use exception\UrlException;
 
 /**
@@ -25,6 +26,7 @@ class Bootstrap
 		UrlResolver::resolve($_SERVER['REQUEST_URI']);
 		try {
 			ControllerResolver::findController(UrlResolver::getController(), UrlResolver::getAction(), UrlResolver::getParams());
+			View::findView(UrlResolver::getController(), UrlResolver::getAction());
 		} catch (UrlException $e) {
 			http_response_code(404);
 			exit;

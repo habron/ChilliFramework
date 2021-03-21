@@ -5,42 +5,42 @@ namespace core\controller;
 
 /**
  * Abstract controller
- * 
+ *
  * @author ondra
  */
 abstract class Controller
 {
 
-    protected \StdClass $template;
+	protected \StdClass $template;
 
-    private bool $startupError = true;
-
-
-    /**
-     * Startup function
-     * @return void
-     */
-    public function startup(): void
-    {
-        $this->startupError = false;
-    }
+	private bool $startupError = true;
 
 
-    /**
-     * Return template attributes as \StdClass     
-     * @return \StdClass
-     */
-    public function getTemplate(): \StdClass
-    {
-        return $this->template;
-    }
-   
+	/**
+	 * Startup function
+	 * @return void
+	 */
+	public function startup(): void
+	{
+		$this->startupError = false;
+	}
 
-    public function __destruct()
-    {
-        if ($this->startupError) {
-            throw new \Exception("Parent method startup() was not called.");
-        }
-    }
+
+	/**
+	 * Return template attributes as \StdClass
+	 * @return \StdClass
+	 */
+	public function getTemplate(): \StdClass
+	{
+		return $this->template;
+	}
+
+
+	public function __destruct()
+	{
+		if ($this->startupError) {
+			throw new \Exception("Parent method startup() was not called.");
+		}
+	}
 
 }

@@ -11,8 +11,8 @@ class HomepageController extends BaseController
 {
 
 
-    public function renderDefault(): void
-    {
-        
-    }
+	public function renderDefault(): void
+	{
+
+	}
 }
