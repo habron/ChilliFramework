@@ -14,9 +14,14 @@ require_once __DIR__ . "/consts.php";
 require_once __DIR__ . "/../core/Bootstrap.php";
 require_once __DIR__ . "/../core/controller/Controller.php";
 require_once __DIR__ . "/../core/controller/ControllerResolver.php";
+require_once __DIR__ . "/../core/database/Connection.php";
+require_once __DIR__ . "/../core/di/Container.php";
 require_once __DIR__ . "/../core/url/UrlEntity.php";
 require_once __DIR__ . "/../core/url/UrlResolver.php";
 require_once __DIR__ . "/../core/view/View.php";
+
+//Database
+require_once __DIR__ . "/../database/Reports.php";
 
 //Exception
 require_once __DIR__ . "/../exception/UrlException.php";
@@ -25,6 +30,9 @@ require_once __DIR__ . "/../exception/UrlException.php";
 require_once __DIR__ . "/../controllers/BaseController.php";
 require_once __DIR__ . "/../controllers/ErrorController.php";
 require_once __DIR__ . "/../controllers/HomepageController.php";
+
+//Model
+
 
 //Views
 require_once __DIR__ . "/../views/Homepage/default.php";

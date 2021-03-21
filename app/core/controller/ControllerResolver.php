@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace core\controller;
 
+use core\di\Container;
 use core\url\UrlEntity;
+use Exception;
 use exception\UrlException;
 use ReflectionException;
 use ReflectionMethod;
@@ -49,8 +51,12 @@ class ControllerResolver
 			}
 		}
 
-		self::$controller = new $class(); //TODO Solve constructor dependencies
-		if (self::$controller instanceof Controller == false) {
+		try {
+			$instance = Container::createObject($class);
+		} catch (Exception $e) {
+			$instance = null;
+		}
+		if ($instance == null || $instance instanceof Controller == false) {
 			if ($urlEntity->getController() != "Error") {
 				$errorEntity = new UrlEntity("Error", "404", $urlEntity->getParams());
 				self::findController($errorEntity);
@@ -59,6 +65,7 @@ class ControllerResolver
 				throw new UrlException("Controller is not child of core\controller\Controller!", 404);
 			}
 		}
+		self::$controller = $instance;
 		self::$controller->startup();
 
 		$methodAction = "action" . $urlEntity->getAction();
