@@ -7,3 +7,7 @@ const DEFAULT_PARAM = "id";
 
 const CONTROLLERS_NAMESPACE = "controllers\\";
 const VIEW_DIR = __DIR__ . "/../views/";
+
+const DB_NAME = "";
+const DB_USERNAME = "";
+const DB_PASSWORD = "";
