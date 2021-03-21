@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace core\controller;
 
+use stdClass;
+
 /**
  * Abstract controller
  *
@@ -11,10 +13,15 @@ namespace core\controller;
 abstract class Controller
 {
 
-	protected \StdClass $template;
+	protected StdClass $template;
 
 	private bool $startupError = true;
 
+
+	public function __construct()
+	{
+		$this->template = new StdClass();
+	}
 
 	/**
 	 * Startup function

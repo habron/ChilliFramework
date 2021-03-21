@@ -23,13 +23,14 @@ class Bootstrap
 	 */
 	public static function boot(): void
 	{
-		UrlResolver::resolve($_SERVER['REQUEST_URI']);
+		$urlEntity = UrlResolver::resolve($_SERVER['REQUEST_URI']);
+
 		try {
-			ControllerResolver::findController(UrlResolver::getController(), UrlResolver::getAction(), UrlResolver::getParams());
-			View::findView(UrlResolver::getController(), UrlResolver::getAction());
+			$urlEntity = ControllerResolver::findController($urlEntity);
+			View::findView(ControllerResolver::getController(), $urlEntity);
 		} catch (UrlException $e) {
-			http_response_code(404);
-			exit;
+			http_response_code($e->getCode());
 		}
+
 	}
 }

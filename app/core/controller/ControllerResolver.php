@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace core\controller;
 
+use core\url\UrlEntity;
 use exception\UrlException;
 use ReflectionException;
 use ReflectionMethod;
@@ -31,34 +32,46 @@ class ControllerResolver
 
 	/**
 	 * Finds controller
-	 * @param string $controllerName
-	 * @param string $actionName
-	 * @param array $params
-	 * @return void
+	 * @param UrlEntity $urlEntity
+	 * @return UrlEntity
 	 * @throws UrlException
 	 */
-	public static function findController(string $controllerName, string $actionName, array $params): void
+	public static function findController(UrlEntity $urlEntity): UrlEntity
 	{
-		$class = CONTROLLERS_NAMESPACE . $controllerName . "Controller";
+		$class = CONTROLLERS_NAMESPACE . $urlEntity->getController() . "Controller";
 		if (!class_exists($class)) {
-			throw new UrlException("Page not found!");
+			if ($urlEntity->getController() != "Error") {
+				$errorEntity = new UrlEntity("Error", "404", $urlEntity->getParams());
+				self::findController($errorEntity);
+				return $errorEntity;
+			} else {
+				throw new UrlException("Page not found!", 404);
+			}
 		}
 
 		self::$controller = new $class(); //TODO Solve constructor dependencies
 		if (self::$controller instanceof Controller == false) {
-			throw new UrlException("Controller is not child of App\Core\Controller\Controller!");
+			if ($urlEntity->getController() != "Error") {
+				$errorEntity = new UrlEntity("Error", "404", $urlEntity->getParams());
+				self::findController($errorEntity);
+				return $errorEntity;
+			} else {
+				throw new UrlException("Controller is not child of core\controller\Controller!", 404);
+			}
 		}
 		self::$controller->startup();
 
-		$methodAction = "action" . $actionName;
-		$methodRender = "render" . $actionName;
+		$methodAction = "action" . $urlEntity->getAction();
+		$methodRender = "render" . $urlEntity->getAction();
 
 		if (method_exists(self::$controller, $methodAction)) {
-			self::callMethod(self::$controller, $methodAction, $params);
+			self::callMethod(self::$controller, $methodAction, $urlEntity->getParams());
 		}
 		if (method_exists(self::$controller, $methodRender)) {
-			self::callMethod(self::$controller, $methodRender, $params);
+			self::callMethod(self::$controller, $methodRender, $urlEntity->getParams());
 		}
+
+		return $urlEntity;
 
 	}
 
@@ -82,7 +95,7 @@ class ControllerResolver
 		$parameters = [];
 		foreach ($args as $arg) {
 			if (!isset($params[$arg])) {
-				throw new UrlException("Missing argument!");
+				throw new UrlException("Missing argument!", 404);
 			}
 			$parameters[$arg] = $params[$arg];
 		}

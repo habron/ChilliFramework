@@ -19,41 +19,11 @@ class UrlResolver
 
 
 	/**
-	 * Returns controller name
-	 * @return string
-	 */
-	public static function getController(): string
-	{
-		return self::$controller;
-	}
-
-
-	/**
-	 * Returns action name
-	 * @return string
-	 */
-	public static function getAction(): string
-	{
-		return self::$action;
-	}
-
-
-	/**
-	 * Returns params
-	 * @return array
-	 */
-	public static function getParams(): array
-	{
-		return self::$params;
-	}
-
-
-	/**
 	 * Resolves url
 	 * @param string $url
-	 * @return void
+	 * @return UrlEntity
 	 */
-	public static function resolve(string $url): void
+	public static function resolve(string $url): UrlEntity
 	{
 		$counter = 0;
 		foreach (explode("/", $url) as $part) {
@@ -73,6 +43,8 @@ class UrlResolver
 
 			$counter++;
 		}
+
+		return new UrlEntity(self::$controller, self::$action, self::$params);
 	}
 
 
