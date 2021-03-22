@@ -41,5 +41,6 @@ class HomepageController extends BaseController
 			$date = null;
 		}
 		$this->template->reports = $this->reports->getReports($date);
+		$this->template->lastReport = $this->reports->getLastReport();
 	}
 }

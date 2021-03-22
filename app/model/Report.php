@@ -14,6 +14,8 @@ use DateTime;
 class Report
 {
 
+	const SOIL_HUMIDITY_MAX = 1023;
+
 	/** @var int */
 	private int $id;
 
@@ -72,6 +74,16 @@ class Report
 	public function getSoilHumidity(): float
 	{
 		return $this->soilHumidity;
+	}
+
+
+	/**
+	 * Returns soil humidity in percents
+	 * @return float
+	 */
+	public function getSoilHumidityPercent(): float
+	{
+		return round(100 - (($this->soilHumidity/self::SOIL_HUMIDITY_MAX) * 100), 2);
 	}
 
 

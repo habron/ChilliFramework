@@ -61,4 +61,26 @@ class Reports
 		return $reports;
 	}
 
+
+	/**
+	 * Return last report
+	 * @return Report
+	 */
+	public function getLastReport(): Report
+	{
+		$report = new Report(0, 0, Report::SOIL_HUMIDITY_MAX, 0, new DateTime());
+
+		$result = $this->pdo->query("SELECT * FROM last_report");
+
+		if ($result->rowCount() > 0) {
+			$row = $result->fetch(PDO::FETCH_ASSOC);
+			try {
+				$report = new Report((int)$row["id"], floatval($row["temperature"]), floatval($row["soil_humidity"]), floatval($row["air_humidity"]), new DateTime($row["datetime"]));
+			} catch (Exception $e) {
+			}
+		}
+
+		return $report;
+	}
+
 }

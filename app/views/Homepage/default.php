@@ -5,6 +5,7 @@ use model\Report;
 
 $template ??= new StdClass;
 $template->reports ??= [];
+$template->lastReport ??= new Report(0, 0, Report::SOIL_HUMIDITY_MAX, 0, new DateTime());
 $template->date ??= "";
 ?>
 <!DOCTYPE html>
@@ -37,8 +38,18 @@ $template->date ??= "";
         <div class="col-md-3">
             <input type="text" class="form-control" autocomplete="off" value="<?php echo $template->date; ?>" placeholder="Vyberte datum" id="date" name="date">
         </div>
-        <div class="col-md">
+        <div class="col-md-1">
             <button type="button" class="btn btn-primary" onclick="selectDate();">Zobrazit</button>
+        </div>
+        <div class="col-md mx-3">
+            <table class="table">
+                <tr>
+                    <td>Poslední data:</td>
+                    <td <?php if($template->lastReport->getTemperature()<15)echo'class="bg-danger"';elseif($template->lastReport->getTemperature()<20)echo'class="bg-warning"';?>>T: <?php echo $template->lastReport->getTemperature(); ?> °C</td>
+                    <td <?php if($template->lastReport->getSoilHumidityPercent()<60)echo'class="bg-danger"';elseif($template->lastReport->getSoilHumidityPercent()<70)echo'class="bg-warning"';?>>VP: <?php echo $template->lastReport->getSoilHumidityPercent(); ?> %</td>
+                    <td>VV: <?php echo $template->lastReport->getAirHumidity(); ?> %</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -72,7 +83,7 @@ $template->date ??= "";
 					?>
                 ],
                 datasets: [{
-                    label: 'Temperature',
+                    label: 'Teplota °C',
                     data: [
                         <?php
                             /** @var Report $report */
@@ -110,12 +121,12 @@ $template->date ??= "";
 					?>
                 ],
                 datasets: [{
-                    label: 'Soil humidity',
+                    label: 'Vlhkost půdy %',
                     data: [
 						<?php
 						/** @var Report $report */
 						foreach ($template->reports as $report) {
-							echo $report->getSoilHumidity() . ", ";
+							echo $report->getSoilHumidityPercent() . ", ";
 						}
 						?>
                     ],
@@ -139,7 +150,7 @@ $template->date ??= "";
 					?>
                 ],
                 datasets: [{
-                    label: 'Air humidity',
+                    label: 'Vlhkost vzduchu %',
                     data: [
 						<?php
 						/** @var Report $report */
