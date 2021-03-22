@@ -34,10 +34,14 @@ class HomepageController extends BaseController
 	 */
 	public function renderDefault(string $date = ""): void
 	{
-		try {
-			$date = !empty($date) ? new DateTime($date) : null;
-			$this->template->date = $date->format("d.m.Y");
-		} catch (Exception $e) {
+		if (!empty($date)) {
+			try {
+				$date = new DateTime($date);
+				$this->template->date = $date->format("d.m.Y");
+			} catch (Exception $e) {
+				$date = null;
+			}
+		} else {
 			$date = null;
 		}
 		$this->template->reports = $this->reports->getReports($date);
